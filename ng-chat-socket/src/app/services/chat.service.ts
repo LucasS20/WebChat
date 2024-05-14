@@ -8,8 +8,9 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class ChatService {
-  private stompClient: any;
-  private readonly url: string = '//localhost:8080';
+  stompClient: any;
+
+  private readonly url: string = '//100.27.30.223:8080';
   private messageSubject: BehaviorSubject<ChatMessage[]> = new BehaviorSubject<ChatMessage[]>([]);
 
   constructor() {
@@ -25,20 +26,34 @@ export class ChatService {
 
   joinRoom(roomId: string) {
     this.stompClient.connect({}, () => {
-      this.stompClient.subscribe(`/topic/${roomId}`, (mensagens: any) => {
-        const conteudoMensagem = JSON.parse(mensagens.body);
-        const currentMessages = this.messageSubject.getValue();
-        const newMessages = [...currentMessages, conteudoMensagem];
-        this.messageSubject.next(newMessages);
-      });
-    })
+      this.stompClient.subscribe(`/topic/${roomId}`, this.handleMessage.bind(this));
+    });
   }
+
+  handleMessage(mensagens: any) {
+    const conteudoMensagem = JSON.parse(mensagens.body);
+    const currentMessages = this.messageSubject.getValue();
+    const newMessages = [...currentMessages, conteudoMensagem];
+    this.messageSubject.next(newMessages);
+  }
+
 
   sendMessage(roomId: string, chatMessage: ChatMessage) {
     this.stompClient.send(`app/chat/${roomId}`, {}, JSON.stringify(chatMessage))
   }
 
+  sendMessageToGameStartedEndpoint(roomId: string) {
+    const message = {
+      mensagem: 'Jogo Iniciado',
+      user: 'System' // or any sender name
+    };
+
+    this.stompClient.send(`app/jogo-iniciado/${roomId}`);
+  }
+
+
   getMessageSubject() {
     return this.messageSubject.asObservable();
   }
+
 }

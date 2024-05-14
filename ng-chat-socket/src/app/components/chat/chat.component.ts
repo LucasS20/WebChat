@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatService} from "../../services/chat.service";
 import {ChatMessage} from "../../models/chat-message";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-chat',
@@ -11,16 +11,17 @@ import {NgForOf} from "@angular/common";
   imports: [
     FormsModule,
     NgForOf,
+    NgIf,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
 export class ChatComponent implements OnInit {
   constructor(private chatService: ChatService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
-  isModalOpen: boolean = true;
   roomId: string = '';
   messageInput: string = '';
   userId: string = '';
@@ -39,14 +40,22 @@ export class ChatComponent implements OnInit {
       mensagem: this.messageInput,
       user: this.userId
     } as ChatMessage;
-    console.log(mensagem);
     this.chatService.sendMessage(this.roomId, mensagem);
     this.messageInput = '';
   }
+  sendGameStartedMessage() {
+      this.chatService.sendMessageToGameStartedEndpoint(this.roomId);
+  }
+
 
   listenerMessage() {
     this.chatService.getMessageSubject().subscribe((mensagem: ChatMessage[]) => {
+
+      if(mensagem.length && mensagem[mensagem.length-1].mensagem.includes('O jogo vai começar'))
+        window.location.href = `http://localhost:5173/${this.roomId}`;
       this.listaMensagens = mensagem;
     });
   }
+
+
 }

@@ -11,8 +11,13 @@ public class WebSocketController {
     @MessageMapping("/chat/{roomId}")
     @SendTo("/topic/{roomId}")
     public ChatMessageDTO chat(@DestinationVariable String roomId, ChatMessageDTO messageDTO) {
-        System.out.println(messageDTO);
         return new ChatMessageDTO(messageDTO.getMensagem(), messageDTO.getUser());
+    }
+
+    @MessageMapping("/chat/{roomId}/iniciarJogo")
+    @SendTo("/topic/{roomId}")
+    public ChatMessageDTO iniciarJogo() {
+        return new ChatMessageDTO("Jogo Iniciado", "fulano");
     }
 
 }

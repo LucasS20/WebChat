@@ -13,7 +13,7 @@
   </div>
   <ul class="messages">
     <li class="message right" *ngFor="let mensagem of listaMensagens">
-      <div class="avatar">{{mensagem.user.substr(1,1)}}</div>
+      <div class="avatar">{{mensagem.user.substr(1, 1)}}</div>
       <div class="text_wrapper">
         <div class="text">{{mensagem.user}} : {{mensagem.mensagem}}</div>
       </div>
@@ -21,14 +21,22 @@
   </ul>
   <div class="bottom_wrapper clearfix">
     <div class="message_input_wrapper">
-      <input class="message_input" placeholder="Digite aqui sua mensagem..." [(ngModel)]="messageInput"  />
+      <input class="message_input" placeholder="Digite aqui sua mensagem..." [(ngModel)]="messageInput"/>
     </div>
     <div class="send_message" (click)="sendMessage()">
       <div class="icon"></div>
-      <div class="text" >Enviar</div>
+      <div class="text">Enviar</div>
+
     </div>
+    <div class="send_message" (click)="sendGameStartedMessage()"
+         *ngIf="userId.toLowerCase()=='Professor'.toLowerCase()">
+      <div class="icon"></div>
+      <div class="text">Iniciar Jogo</div>
+
+    </div>
+
+
   </div>
+
 </div>
-
-
 </body>
