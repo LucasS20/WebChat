@@ -1,0 +1,9 @@
+<mat-form-field>
+  <mat-label>{{nomePropriedade}}</mat-label>
+  <mat-select [formControl]="getControl('selecionar')" required>
+    <mat-option value="">--</mat-option>
+    <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
+  </mat-select>
+  <mat-error *ngIf="getControl('selecionar').hasError('required')">Por favor selecione um/uma  {{nomePropriedade}}</mat-error>
+  <mat-hint>{{getControl('selecionar').value}}</mat-hint>
+</mat-form-field>

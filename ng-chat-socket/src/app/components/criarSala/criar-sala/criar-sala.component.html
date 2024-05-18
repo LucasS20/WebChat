@@ -1,23 +1,19 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="login-form-flex">
+    <mat-card>
+        <mat-card-content>
+        <mat-card-title>
+            Criar Sala
+        </mat-card-title>
 
-<div class="wrapper fadeInDown">
-  <div id="formContent">
+                <app-input [nomeCampo]="'Código da sala'"></app-input>
+                <app-select [options]="gruposPerguntas"
+                            [nomePropriedade]="'Grupo de perguntas'">
 
-    <div class="fadeIn first">
-      <h2>Olá professor, para criar a sala, basta inserir o código no campo abaixo</h2>
-    </div>
+                </app-select>
 
-
-    <form [formGroup]="criarSalaForm" (ngSubmit)="onSubmit($event)">
-      <input type="text" id="login" class="fadeIn second" formControlName="identificadorSala" placeholder="Identificador da sala">
-      <input type="submit" class="fadeIn fourth" value="Criar Sala">
-    </form>
-
-    <div id="formFooter">
-      <a class="underlineHover"> &reg; What is The question - 2024</a>
-    </div>
-
-  </div>
+            <div class="button-flex-container">
+                <app-button [texto]="'Criar'"></app-button>
+            </div>
+            </mat-card-content>
+    </mat-card>
 </div>
