@@ -23,6 +23,7 @@
     "@porsche-design-system/components-angular": "^3.15.0",
     "@stomp/stompjs": "^7.0.0",
     "@types/sockjs-client": "^1.5.4",
+    "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
     "sockjs": "^0.3.24",
     "sockjs-client": "^1.6.1",

@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatMessage} from "../../../models/chat-message";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, Validators} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {ChatService} from "../../../services/chatService/chat.service";
+import {ButtonComponent} from "../../inputs/button/button.component";
+import {InputComponent} from "../../inputs/input/input.component";
+import {FormComponent} from "../../form/form/form.component";
 
 @Component({
   selector: 'app-chat',
@@ -12,14 +15,19 @@ import {ChatService} from "../../../services/chatService/chat.service";
     FormsModule,
     NgForOf,
     NgIf,
+    ButtonComponent,
+    InputComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements OnInit {
-  constructor(private chatService: ChatService,
-              private route: ActivatedRoute,
-              private router: Router) {
+export class ChatComponent extends FormComponent implements OnInit {
+  constructor(public chatService: ChatService,
+              public route: ActivatedRoute) {
+    super();
+    this.form = this.formBuilder.group({
+      mensagem: [null, Validators.required],
+    });
   }
 
   roomId: string = '';
@@ -43,15 +51,16 @@ export class ChatComponent implements OnInit {
     this.chatService.sendMessage(this.roomId, mensagem);
     this.messageInput = '';
   }
+
   sendGameStartedMessage() {
-      this.chatService.sendMessageToGameStartedEndpoint(this.roomId);
+    this.chatService.sendMessageToGameStartedEndpoint(this.roomId);
   }
 
 
   listenerMessage() {
     this.chatService.getMessageSubject().subscribe((mensagem: ChatMessage[]) => {
 
-      if(mensagem.length && mensagem[mensagem.length-1].mensagem.includes('O jogo vai começar'))
+      if (mensagem.length && mensagem[mensagem.length - 1].mensagem.includes('O jogo vai começar'))
         window.location.href = `http://localhost:5173/${this.roomId}`;
       this.listaMensagens = mensagem;
     });

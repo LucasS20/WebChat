@@ -3,21 +3,22 @@ import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
-    selector: 'app-button',
+  selector: 'app-button',
 
-    standalone: true,
-    imports: [
-        MatButton,
-        MatIcon
-    ],
-    templateUrl: './button.component.html',
-    styleUrl: './button.component.scss'
+  standalone: true,
+  imports: [
+    MatButton,
+    MatIcon
+  ],
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
-    @Output() buttonClick = new EventEmitter<void>();
-    @Input() texto!: any;
+  @Output() buttonClick = new EventEmitter<void>();
+  @Input() texto!: any;
+  @Input() disabled!: boolean;
 
-    internalClick() {
-        this.buttonClick.emit();
-    }
+  internalClick() {
+    this.buttonClick.emit();
+  }
 }
