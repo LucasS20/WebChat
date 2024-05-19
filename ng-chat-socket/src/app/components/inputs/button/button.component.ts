@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
     selector: 'app-button',
+
     standalone: true,
     imports: [
         MatButton,
@@ -13,6 +14,10 @@ import {MatIcon} from "@angular/material/icon";
     styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
+    @Output() buttonClick = new EventEmitter<void>();
     @Input() texto!: any;
 
+    internalClick() {
+        this.buttonClick.emit();
+    }
 }

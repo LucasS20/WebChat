@@ -1,5 +1,8 @@
 @use "@material/button/styles";
 
-button {
+.botao {
+  padding: 15px 30px 15px 30px;
   width: 100%;
+  height: 100%;
+  font-size: 15px;
 }

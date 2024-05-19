@@ -5,6 +5,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
 import {NgForOf, NgIf} from "@angular/common";
+import {FormComponent} from "../../form/form/form.component";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-select',
@@ -21,23 +23,21 @@ import {NgForOf, NgIf} from "@angular/common";
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss']
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent extends FormComponent implements OnInit {
 
-    form: FormGroup;
     @Input() options: any;
     @Input() nomePropriedade!: string;
-
-    constructor(public formBuilder: FormBuilder) {
+    @Input() campoParaMostrar!: string;
+    @Input() control!: FormControl;
+    @Input() campoRetorno!: string;
+    constructor() {
+        super();
         this.form = this.formBuilder.group({
             selecionar: [null, Validators.required]
         });
     }
 
     ngOnInit(): void {
-    }
-
-    getControl(controlName: string): FormControl {
-        return this.form.controls[controlName] as FormControl;
     }
 
 }

@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {ChatComponent} from "./components/chat/chat.component";
+import {ChatComponent} from "./components/telas/chat/chat.component";
 import {CriarSalaComponent} from "./components/criarSala/criar-sala/criar-sala.component";
 import {JogoComponent} from "./components/jogo/jogo.component";
 

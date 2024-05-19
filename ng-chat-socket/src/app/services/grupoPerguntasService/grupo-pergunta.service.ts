@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {GrupoPerguntas} from "../../models/grupo-perguntas";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {CreateSala} from "../../models/create-sala";
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -17,4 +20,5 @@ export class GrupoPerguntaService {
         const urlGetProfessorID = 'getByProfessorID';
         return this.http.get<GrupoPerguntas[]>(`${this.urlHost}/${this.endpointGrupoPerguntas}/${urlGetProfessorID}/${professorID}`);
     }
+
 }

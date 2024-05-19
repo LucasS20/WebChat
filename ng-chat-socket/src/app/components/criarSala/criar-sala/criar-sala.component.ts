@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {SelectComponent} from "../../inputs/select/select.component";
@@ -11,6 +10,15 @@ import {HttpClientModule} from "@angular/common/http";
 import {GrupoPerguntas} from "../../../models/grupo-perguntas";
 import {InputComponent} from "../../inputs/input/input.component";
 import {ButtonComponent} from "../../inputs/button/button.component";
+import {FormComponent} from "../../form/form/form.component";
+import {JogoService} from "../../../services/jogoService/jogo.service";
+import {CreateSala} from "../../../models/create-sala";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {SpinnerComponent} from "../../spinner/spinner/spinner.component";
+import {SpinnerService} from "../../spinner/spinner/spinner.service";
+import {ToastComponent} from "../../toast/toast.component";
+import {ToastService} from "../../../services/toast.service";
+
 @Component({
     selector: 'app-criar-sala',
     standalone: true,
@@ -28,51 +36,78 @@ import {ButtonComponent} from "../../inputs/button/button.component";
         HttpClientModule,
         MatLabel,
         InputComponent,
-        ButtonComponent
+        ButtonComponent,
+        MatProgressSpinner,
+        SpinnerComponent,
+        ToastComponent,
     ],
     templateUrl: './criar-sala.component.html',
     styleUrl: './criar-sala.component.scss'
 })
-export class CriarSalaComponent implements OnInit {
-    criarSalaForm: FormGroup;
-    readonly urlHost = 'http://localhost:4200';
-    gruposPerguntas: any[] = [];
+export class CriarSalaComponent extends FormComponent implements OnInit {
+    readonly URL_HOST = 'http://localhost:4200';
+    gruposPerguntas: GrupoPerguntas[] = [];
+    private readonly PROFESSOR_ID: string = 'a5d07b8a-cc61-4a9d-9789-301a93f3ad9d';
 
-    constructor(private formBuilder: FormBuilder,
-                private router: Router,
-                private service: GrupoPerguntaService
-    ) {
+    constructor(private grupoPerguntaService: GrupoPerguntaService,
+                private jogoService: JogoService,
+                private spinnerService: SpinnerService,
+                private toastService: ToastService) {
 
-        this.criarSalaForm = this.criarFormulario();
-         this.service.getGruposPerguntasProfessorID('6b5a40fe-4fb0-464f-ba4d-a166212ce720').subscribe({
+        super();
+        this.form = this.formBuilder.group({
+            id: [null, Validators.required],
+            grupoPerguntasID: [null, Validators.required],
+            userID: [this.PROFESSOR_ID]
+        });
+    }
+
+    ngOnInit(): void {
+        this.spinnerService.show()
+        this.getGrupoPerguntasID();
+    }
+
+
+    private getGrupoPerguntasID() {
+        this.grupoPerguntaService.getGruposPerguntasProfessorID(this.PROFESSOR_ID).subscribe({
             next: (grupoPerguntas: GrupoPerguntas[]) => {
                 this.gruposPerguntas = grupoPerguntas;
+                this.spinnerService.hide();
+
             }, error: (err) => {
                 console.error(err)
             }
         });
+
     }
 
-    criarFormulario() {
-        return this.formBuilder.group({
-            identificadorSala: ['', Validators.required]
-        });
-    }
-
-    onSubmit(event: Event) {
-        event.preventDefault();
-        this.gerarLink();
-    }
 
     gerarLink() {
-        if (this.criarSalaForm.valid) {
-            const identificadorSala = this.criarSalaForm.value.identificadorSala;
-            const linkSala = `${this.urlHost}/chat/${identificadorSala}/Professor`
+        if (this.form?.valid) {
+            const identificadorSala = this.form.value.identificadorSala;
+            const linkSala = `${this.URL_HOST}/chat/${identificadorSala}/Professor`
             this.router.navigate(['chat', identificadorSala, 'Professor']);
         }
     }
 
-    ngOnInit(): void {
-        // this.options = [];
+    onSubmit() {
+        const formData = this.form?.value;
+        this.spinnerService.show();
+        this.criarSala(formData);
+        this.toastService.show();
     }
+
+    private criarSala(formData: CreateSala) {
+        this.jogoService.criarSala(formData).subscribe({
+            next: (res: any) => {
+                console.log(res);
+                this.spinnerService.hide();
+            },
+            error: (err) => {
+                console.error(err);
+                this.spinnerService.hide();
+            }
+        })
+    }
+
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ChatMessage} from "../../models/chat-message";
+import {ChatMessage} from "../../../models/chat-message";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
-import {ChatService} from "../../services/chatService/chat.service";
+import {ChatService} from "../../../services/chatService/chat.service";
 
 @Component({
   selector: 'app-chat',

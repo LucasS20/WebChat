@@ -1,19 +1,23 @@
 <div class="login-form-flex">
     <mat-card>
         <mat-card-content>
-        <mat-card-title>
-            Criar Sala
-        </mat-card-title>
+            <mat-card-title>
+                Criar Sala
+            </mat-card-title>
 
-                <app-input [nomeCampo]="'Código da sala'"></app-input>
-                <app-select [options]="gruposPerguntas"
-                            [nomePropriedade]="'Grupo de perguntas'">
-
-                </app-select>
+            <app-input [nomeCampo]="'Código da sala'" [control]="getControl('id')"></app-input>
+            <app-select [options]="gruposPerguntas"
+                        [nomePropriedade]="'Grupo de perguntas'"
+                        [campoParaMostrar]="'categoria'"
+                        [campoRetorno]="'id'"
+                        [control]="getControl('grupoPerguntasID')">
+            </app-select>
 
             <div class="button-flex-container">
-                <app-button [texto]="'Criar'"></app-button>
+                <app-button [texto]="'Criar'" (buttonClick)="onSubmit()" disabled="form.valid"></app-button>
             </div>
-            </mat-card-content>
+        </mat-card-content>
     </mat-card>
 </div>
+<app-spinner></app-spinner>
+<app-toast></app-toast>

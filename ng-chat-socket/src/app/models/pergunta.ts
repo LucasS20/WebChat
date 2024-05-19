@@ -1,4 +1,3 @@
-import {GrupoPerguntas} from "./grupo-perguntas";
 import {Resposta} from "./resposta";
 
 export interface Pergunta {
