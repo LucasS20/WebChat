@@ -1,4 +1,4 @@
 <mat-form-field>
-    <mat-label >{{nomeCampo}}</mat-label>
+    <mat-label *ngIf="nomeCampo">{{nomeCampo}}</mat-label>
     <input matInput [formControl]="control">
 </mat-form-field>

@@ -33,7 +33,7 @@ export class ChatService {
     const conteudoMensagem = JSON.parse(mensagens.body);
     const currentMessages = this.messageSubject.getValue();
     const newMessages = [...currentMessages, conteudoMensagem];
-    this.messageSubject.next(newMessages);
+    // this.messageSubject.next();
   }
 
 

@@ -20,23 +20,17 @@
     </li>
   </ul>
   <div class="bottom_wrapper clearfix">
-    <div class="message_input_wrapper">
-      <input class="message_input" placeholder="Digite aqui sua mensagem..." [(ngModel)]="messageInput"/>
-    </div>
-    <div class="send_message" (click)="sendMessage()">
-      <div class="icon"></div>
-      <div class="text">Enviar</div>
-
-    </div>
-    <div class="send_message" (click)="sendGameStartedMessage()"
-         *ngIf="userId.toLowerCase()=='Professor'.toLowerCase()">
-      <div class="icon"></div>
-      <div class="text">Iniciar Jogo</div>
-
-    </div>
-
-
+    <app-input [control]="getControl('mensagem')"/>
+    <app-button texto="'Enviar'"></app-button>
+    <app-button texto="'Iniciar Jogo'"
+                (click)="sendGameStartedMessage()"
+                *ngIf="userId.toLowerCase()=='Professor'.toLowerCase()"
+    ></app-button>
+    <div class="icon"></div>
+    <div class="text">Iniciar Jogo</div>
   </div>
 
+
 </div>
+
 </body>

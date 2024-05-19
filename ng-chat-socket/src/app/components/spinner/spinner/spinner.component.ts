@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AsyncPipe, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {async} from "rxjs";
-import {SpinnerService} from "./spinner.service";
+import {SpinnerService} from "../../../services/spinnerService/spinner.service";
 
 @Component({
     selector: 'app-spinner',

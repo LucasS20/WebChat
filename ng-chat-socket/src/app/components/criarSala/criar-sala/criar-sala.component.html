@@ -13,11 +13,10 @@
                         [control]="getControl('grupoPerguntasID')">
             </app-select>
 
-            <div class="button-flex-container">
-                <app-button [texto]="'Criar'" (buttonClick)="onSubmit()" disabled="form.valid"></app-button>
-            </div>
+          <div class="button-flex-container">
+            <app-button [texto]="'Criar'" (buttonClick)="onSubmit()" [disabled]="!form.valid"></app-button>
+          </div>
         </mat-card-content>
     </mat-card>
 </div>
 <app-spinner></app-spinner>
-<app-toast></app-toast>

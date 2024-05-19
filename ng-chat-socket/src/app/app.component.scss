@@ -5,3 +5,13 @@
 .mat-progress-spinner circle, .mat-spinner circle {
   stroke: black !important;
 }
+
+
+
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background: url('background.svg') no-repeat center center fixed;
+  background-size: cover;
+}
