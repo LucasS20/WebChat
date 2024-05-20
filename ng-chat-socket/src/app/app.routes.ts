@@ -4,7 +4,7 @@ import {CriarSalaComponent} from "./components/criarSala/criar-sala/criar-sala.c
 import {JogoComponent} from "./components/telas/jogo/jogo.component";
 
 export const routes: Routes = [
-  {path: 'chat/:roomId/:userId', component: ChatComponent},
+  {path: 'chat/:salaID/:userID', component: ChatComponent},
   {path: 'criarSala', component: CriarSalaComponent},
-  {path: 'jogo', component: JogoComponent},
+  {path: 'jogo/:salaID/:userID', component: JogoComponent},
 ];

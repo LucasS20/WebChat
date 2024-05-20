@@ -10,7 +10,7 @@ import {BehaviorSubject} from "rxjs";
 export class ChatService {
   stompClient: any;
 
-  private readonly url: string = '//54.234.141.158:8080';
+  private readonly url: string = '//localhost:8080';
   private messageSubject: BehaviorSubject<ChatMessage[]> = new BehaviorSubject<ChatMessage[]>([]);
 
   constructor() {
@@ -33,7 +33,7 @@ export class ChatService {
     const conteudoMensagem = JSON.parse(mensagens.body);
     const currentMessages = this.messageSubject.getValue();
     const newMessages = [...currentMessages, conteudoMensagem];
-    // this.messageSubject.next();
+    this.messageSubject.next(newMessages);
   }
 
 
@@ -46,9 +46,7 @@ export class ChatService {
       mensagem: 'Jogo Iniciado',
       user: 'System'
     }
-
       this.stompClient.send(`app/jogo-iniciado/${roomId}`);
-
   }
   getMessageSubject() {
     return this.messageSubject.asObservable();

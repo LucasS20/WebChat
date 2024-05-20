@@ -61,7 +61,7 @@ export class ChatComponent extends FormComponent implements OnInit {
     this.chatService.getMessageSubject().subscribe((mensagem: ChatMessage[]) => {
 
       if (mensagem.length && mensagem[mensagem.length - 1].mensagem.includes('O jogo vai começar'))
-        window.location.href = `http://localhost:5173/${this.roomId}`;
+        this.router.navigate(['jogo'])
       this.listaMensagens = mensagem;
     });
   }
