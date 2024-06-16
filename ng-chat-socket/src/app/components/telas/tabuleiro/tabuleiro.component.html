@@ -1,1 +1,13 @@
-<p>tabuleiro works!</p>
+<div class="tabuleiro-container">
+    <div class="logo-container">
+        <img [src]="logoSrc" alt="Logo" class="logo-image"/>
+        <app-button class="central-button" (click)="onButtonClick()" [texto]="'Próxima Pergunta'"></app-button>
+    </div>
+    <div *ngFor="let rowIndex of [].constructor(numRows); let row = index" class="row">
+        <div *ngFor="let colIndex of [].constructor(numCols); let col = index"
+             [ngClass]="{ 'cell': true, 'bordered': getNumber(row, col) }"
+             [style.backgroundColor]="getNumber(row, col) ? '#EF4444' : 'transparent'">
+            {{ getNumber(row, col) }}
+        </div>
+    </div>
+</div>
