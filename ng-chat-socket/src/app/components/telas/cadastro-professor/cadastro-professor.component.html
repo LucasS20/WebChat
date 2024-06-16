@@ -1,0 +1,24 @@
+<div class="login-form-flex">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        Cadastro de professor
+      </mat-card-title>
+
+      <app-input [nomeCampo]="'Nome'" [control]="getControl('nome')"></app-input>
+      <app-input [nomeCampo]="'Email'" [control]="getControl('email')"></app-input>
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="getControl('senha')">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="button-flex-container">
+        <app-button [texto]="'Criar'" (buttonClick)="onSubmit()" [disabled]="!form.valid"></app-button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<app-spinner></app-spinner>
