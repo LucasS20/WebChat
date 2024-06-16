@@ -2,14 +2,14 @@
 
   <div class="top_menu">
     <div class="title">
-      Sala de espera : {{roomId}}
+      Sala de espera : {{salaID}}
     </div>
   </div>
   <ul class="messages">
-    <li class="message right" *ngFor="let mensagem of listaMensagens">
+    <li class="message right" *ngFor="let dto of listaMensagens">
       <div class="avatar"></div>
       <div class="text_wrapper">
-        <div class="text">{{mensagem.user}} : {{mensagem.mensagem}} </div>
+        <div class="text">{{dto.chatMessage.user}} : {{dto.chatMessage.mensagem}}</div>
       </div>
     </li>
   </ul>
@@ -20,16 +20,12 @@
     <div class="send_message" (click)="sendMessage()">
       <div class="icon"></div>
       <div class="text">Enviar</div>
-
     </div>
     <div class="send_message" (click)="sendGameStartedMessage()"
-         *ngIf="userId.toLowerCase()=='Professor'.toLowerCase()">
+         *ngIf="userID.toLowerCase()=='Professor'.toLowerCase()">
       <div class="icon"></div>
       <div class="text">Iniciar Jogo</div>
-
     </div>
-
-
   </div>
 
 </div>

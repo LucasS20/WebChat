@@ -1,17 +1,18 @@
 <div class="login-form-flex">
-    <mat-card>
-        <mat-card-content>
-            <mat-card-title>
-                Sala {{salaID}}
-            </mat-card-title>
-            <mat-card-title class="enunciado">
-                {{pergunta.enunciado}}
-            </mat-card-title>
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        Sala {{salaID}}
+      </mat-card-title>
+      <mat-card-title class="enunciado">
+        {{pergunta.enunciado}}
+      </mat-card-title>
 
-            <div class="buttons" *ngFor="let resposta of  pergunta.opcoes">
-                <app-button [texto]="resposta.conteudo" class="botao"></app-button>
-            </div>
-        </mat-card-content>
-    </mat-card>
+      <div class="buttons" *ngFor="let resposta of  pergunta.opcoes">
+        <app-button [texto]="resposta.conteudo" class="botao"
+                    [objeto]=" resposta" (click)="responder(resposta)"></app-button>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
 <app-spinner></app-spinner>

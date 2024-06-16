@@ -53,10 +53,6 @@ export class JogoComponent extends FormComponent implements OnInit {
         });
     }
 
-    onSubmit() {
-        console.log('a')
-    }
-
 
     ngOnInit() {
         this.route.params.subscribe(params => {
@@ -64,8 +60,8 @@ export class JogoComponent extends FormComponent implements OnInit {
             this.userID = params['userID'];
         })
 
-        this.jogoService.conectarAosSockets(this.salaID).then(() => {
-            this.jogoService.solicitarPergunta(this.salaID);
+        this.jogoService.conectarAosSockets(this.salaID, this.userID).then(() => {
+            this.jogoService.solicitarPergunta();
 
             this.subscription.add(this.jogoService.perguntaAtual.subscribe(pergunta => {
                 this.spinner.show();
@@ -76,11 +72,20 @@ export class JogoComponent extends FormComponent implements OnInit {
 
             }));
 
-            this.subscription.add(interval(10000).subscribe(x => {
-                this.jogoService.solicitarPergunta(this.salaID);
+            this.subscription.add(interval(100000).subscribe(() => {
+                this.jogoService.solicitarPergunta();
             }));
         }).catch(error => {
             console.error("Erro ao estabelecer conexão WebSocket:", error);
         })
+    }
+
+    responder(resposta: Resposta,) {
+        const respostaAluno = {
+            aluno: this.userID,
+            pergunta: this.pergunta,
+            resposta: resposta
+        };
+        this.jogoService.responder(respostaAluno)
     }
 }

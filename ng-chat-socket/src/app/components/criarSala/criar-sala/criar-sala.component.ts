@@ -17,6 +17,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SpinnerComponent} from "../../spinner/spinner/spinner.component";
 import {SpinnerService} from "../../../services/spinnerService/spinner.service";
 import {ToastrService} from "ngx-toastr";
+import {User} from "../../../models/user";
 
 @Component({
   selector: 'app-criar-sala',
@@ -46,6 +47,7 @@ export class CriarSalaComponent extends FormComponent implements OnInit {
   readonly URL_HOST = 'http://localhost:4200';
   gruposPerguntas: GrupoPerguntas[] = [];
   private readonly PROFESSOR_ID: string = 'a5d07b8a-cc61-4a9d-9789-301a93f3ad9d';
+  private user: User = {} as User;
 
   constructor(private grupoPerguntaService: GrupoPerguntaService,
               private jogoService: JogoService,
@@ -84,7 +86,7 @@ export class CriarSalaComponent extends FormComponent implements OnInit {
   redirecionarSalaEspera() {
     const idSala = this.form.value.id;
     const linkSala = `${this.URL_HOST}/chat/${idSala}/${(this.PROFESSOR_ID)}`
-    console.log(this.router.navigate(['chat', idSala, this.PROFESSOR_ID]));
+    this.router.navigate(['chat', idSala, this.PROFESSOR_ID]);
   }
 
   onSubmit() {
@@ -96,7 +98,8 @@ export class CriarSalaComponent extends FormComponent implements OnInit {
   private criarSala(formData: CreateSala) {
     this.spinnerService.show();
     this.jogoService.criarSala(formData).subscribe({
-      next: () => {
+      next: (retorno: any) => {
+        this.user = retorno.user;
         this.spinnerService.hide();
         this.toastr.show('Sala Criada com sucesso', 'Ok')
         this.redirecionarSalaEspera();

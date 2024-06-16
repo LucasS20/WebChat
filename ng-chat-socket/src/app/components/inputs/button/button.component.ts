@@ -18,7 +18,9 @@ export class ButtonComponent {
   @Input() texto!: any;
   @Input() disabled!: boolean;
 
+  @Input() objeto?:Object;
   internalClick() {
     this.buttonClick.emit();
   }
+
 }

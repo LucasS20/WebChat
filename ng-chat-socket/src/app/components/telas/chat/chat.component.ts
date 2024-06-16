@@ -1,12 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ChatMessage} from "../../../models/chat-message";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormsModule, Validators} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
-import {ChatService} from "../../../services/chatService/chat.service";
-import {ButtonComponent} from "../../inputs/button/button.component";
-import {InputComponent} from "../../inputs/input/input.component";
-import {FormComponent} from "../../form/form/form.component";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChatMessage } from '../../../models/chat-message';
+import { ActivatedRoute } from '@angular/router';
+import { FormsModule, Validators } from '@angular/forms';
+import { NgForOf, NgIf } from '@angular/common';
+import { ChatService } from '../../../services/chatService/chat.service';
+import { ButtonComponent } from '../../inputs/button/button.component';
+import { InputComponent } from '../../inputs/input/input.component';
+import { FormComponent } from '../../form/form/form.component';
+import { MessageType } from '../../../models/MessageType';
+import { Dto } from '../../../models/dto';
+import { Pergunta } from '../../../models/pergunta';
 
 @Component({
   selector: 'app-chat',
@@ -19,9 +22,9 @@ import {FormComponent} from "../../form/form/form.component";
     InputComponent,
   ],
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.scss'
+  styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent extends FormComponent implements OnInit {
+export class ChatComponent extends FormComponent implements OnInit, OnDestroy {
   constructor(public chatService: ChatService,
               public route: ActivatedRoute) {
     super();
@@ -30,41 +33,43 @@ export class ChatComponent extends FormComponent implements OnInit {
     });
   }
 
-  roomId: string = '';
+  salaID: string = '';
   messageInput: string = '';
-  userId: string = '';
+  userID: string = '';
   listaMensagens: any[] = [];
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.params['userId'];
-    this.roomId = this.route.snapshot.params['roomId'];
-
-    this.chatService.joinRoom(this.roomId);
+    this.userID = this.route.snapshot.params['userID'];
+    this.salaID = this.route.snapshot.params['salaID'];
+    this.chatService.initConnectionSocket(this.userID, this.salaID);
     this.listenerMessage();
   }
 
+  ngOnDestroy(): void {
+    this.chatService.disconnect();
+  }
+
   sendMessage() {
-    const mensagem = {
-      mensagem: this.messageInput,
-      user: this.userId
-    } as ChatMessage;
-    this.chatService.sendMessage(this.roomId, mensagem);
+    if (this.messageInput) {
+      const dto: Dto = {
+        salaID: this.salaID,
+        chatMessage: this.messageInput,
+        pergunta: {} as Pergunta,
+        type: MessageType.mensagem
+      }
+      this.chatService.sendMessage(this.salaID, dto);
+    }
     this.messageInput = '';
   }
 
   sendGameStartedMessage() {
-    this.chatService.sendMessageToGameStartedEndpoint(this.roomId);
+    this.chatService.sendMessageToGameStartedEndpoint(this.salaID);
   }
-
 
   listenerMessage() {
-    this.chatService.getMessageSubject().subscribe((mensagem: ChatMessage[]) => {
-
-      if (mensagem.length && mensagem[mensagem.length - 1].mensagem.includes('O jogo vai começar'))
-        this.router.navigate(['jogo'])
-      this.listaMensagens = mensagem;
+    this.chatService.getMessageSubject().subscribe((dtos: Dto[]) => {
+      const mensagens = dtos.filter(dto => dto.type === MessageType.mensagem);
+      this.listaMensagens = mensagens;
     });
   }
-
-
 }
