@@ -7,15 +7,19 @@ import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
 import {SpinnerService} from "../spinnerService/spinner.service";
 import {Subject} from 'rxjs';
+import {Dto} from "../../models/dto";
+import {MessageType} from "../../models/MessageType";
+import {Pergunta} from "../../models/pergunta";
 
 @Injectable({
   providedIn: 'root'
 })
 export class JogoService {
-  private readonly urlHost: string = 'http://localhost:8080';
+  private readonly urlHost: string = 'http://localhost:8081';
+  private readonly urlHostRest: string = 'http://localhost:8080';
   private readonly endpointJogoRest = 'api/jogo';
   private stompClient: any;
-  public perguntaAtual = new Subject<string>();
+  public perguntaAtual = new Subject<any>();
   private roomID: string = '';
   private userID: string = '';
 
@@ -27,16 +31,22 @@ export class JogoService {
 
   criarSala(dadosSala: CreateSala): Observable<any> {
     const create: string = 'create';
-    return this.http.post<Jogo>(`${this.urlHost}/${this.endpointJogoRest}/${create}`, dadosSala);
+    return this.http.post<Jogo>(`${this.urlHostRest}/${this.endpointJogoRest}/${create}`, dadosSala);
   }
 
   conectarAosSockets(roomId: string, userID: string): Promise<void> {
     this.roomID = roomId;
     this.userID = userID;
+
+    const headers = {
+      nome: userID,
+      salaID: roomId
+    };
     return new Promise((resolve, reject) => {
-      this.stompClient.connect({}, () => {
-        this.stompClient.subscribe(`/topic/jogo/respostas-alunos/${this.roomID}`, {});
-        this.stompClient.subscribe(`/topic/jogo/${this.roomID}`, (message: { body: string }) => {
+      this.stompClient.connect(headers, () => {
+        this.stompClient.subscribe(`/topic/jogo/${this.roomID}`, (message: {
+          body: any
+        }) => {
           this.perguntaAtual.next(message.body);
         });
         resolve();
@@ -47,21 +57,27 @@ export class JogoService {
   }
 
 
-  solicitarPergunta() {
-    if (this.stompClient && this.stompClient.connected) {
-      this.stompClient.send(`app/jogo/get-pergunta/${this.roomID}`, {});
-    } else {
-      console.error("WebSocket connection is not established.");
-    }
-  }
-
   private initConnectionSocket() {
     const socketAdress = `${this.urlHost}/chat-socket`;
     const socket = new SockJS(socketAdress);
     this.stompClient = Stomp.over(socket);
   }
 
-  responder(respostaAluno:any ) {
-    this.stompClient.send(`app/jogo/${this.roomID}/resposta`, {}, JSON.stringify(respostaAluno));
+  responder(respostaAluno: Dto) {
+    console.log(respostaAluno);
+    this.stompClient.send(`app/jogo/${this.roomID}`, {}, JSON.stringify(respostaAluno));
+  }
+
+  sendSolicitacaoPergunta() {
+    const dto: Dto = {
+      salaID: this.roomID,
+      aluno: null,
+      chatMessage: null,
+      pergunta: null,
+      resposta: null,
+      verificaResposta: null,
+      type: MessageType.solicitacaoPergunta
+    }
+    this.stompClient.send(`app/jogo/${this.roomID}`, {}, JSON.stringify(dto));
   }
 }

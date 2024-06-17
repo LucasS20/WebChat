@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
-import { ChatMessage } from '../../models/chat-message';
-import { BehaviorSubject } from 'rxjs';
-import { Dto } from '../../models/dto';
-import { MessageType } from '../../models/MessageType';
-import { Pergunta } from '../../models/pergunta';
+import {Stomp} from '@stomp/stompjs';
+import {ChatMessage} from '../../models/chat-message';
+import {BehaviorSubject} from 'rxjs';
+import {Dto} from '../../models/dto';
+import {MessageType} from '../../models/MessageType';
+import {Pergunta} from '../../models/pergunta';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class ChatService {
   private nome: string = '';
   private salaID: string = '';
 
-  constructor() { }
+  constructor(public router: Router) {
+  }
 
   initConnectionSocket(nome: string, salaID: string) {
     this.nome = nome;
@@ -53,6 +55,9 @@ export class ChatService {
 
   handleMessage(message: any) {
     const conteudoMensagem = JSON.parse(message.body);
+    if (conteudoMensagem.type === MessageType.iniciarJogo) {
+      this.router.navigate(['jogo/tabuleiro', this.salaID, this.nome]);
+    }
     const currentMessages = this.messageSubject.getValue();
     const newMessages = [...currentMessages, conteudoMensagem];
     this.messageSubject.next(newMessages);
@@ -64,8 +69,11 @@ export class ChatService {
 
   sendMessageToGameStartedEndpoint(roomID: string) {
     const dtoInicioJogo: Dto = {
+      aluno: null,
+      resposta: null,
+      verificaResposta: null,
       salaID: roomID,
-      chatMessage: {} as string,
+      chatMessage: null,
       pergunta: {} as Pergunta,
       type: MessageType.iniciarJogo
     }

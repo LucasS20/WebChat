@@ -9,10 +9,13 @@ import {ActivatedRoute} from "@angular/router";
 import {NgForOf} from "@angular/common";
 import {Resposta} from "../../../models/resposta";
 import {JogoService} from "../../../services/jogoService/jogo.service";
-import {interval, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {Pergunta} from "../../../models/pergunta";
 import {MatToolbar} from "@angular/material/toolbar";
 import {SpinnerService} from "../../../services/spinnerService/spinner.service";
+import {Aluno} from "../../../models/Aluno";
+import {Dto} from "../../../models/dto";
+import {MessageType} from "../../../models/MessageType";
 
 @Component({
     selector: 'app-jogo',
@@ -61,31 +64,40 @@ export class JogoComponent extends FormComponent implements OnInit {
         })
 
         this.jogoService.conectarAosSockets(this.salaID, this.userID).then(() => {
-            this.jogoService.solicitarPergunta();
 
             this.subscription.add(this.jogoService.perguntaAtual.subscribe(pergunta => {
                 this.spinner.show();
-                this.pergunta = JSON.parse(pergunta);
-                setTimeout(() => {
-                    this.spinner.hide();
-                }, 1000);
-
+                const dto = JSON.parse(pergunta)
+                this.pergunta = dto.pergunta;
+                this.spinner.hide();
             }));
 
-            this.subscription.add(interval(100000).subscribe(() => {
-                this.jogoService.solicitarPergunta();
-            }));
         }).catch(error => {
             console.error("Erro ao estabelecer conexão WebSocket:", error);
         })
     }
 
-    responder(resposta: Resposta,) {
+    responder(resposta: Resposta) {
+        const aluno: Aluno = {
+            id: null,
+            nome: this.userID
+        }
         const respostaAluno = {
-            aluno: this.userID,
-            pergunta: this.pergunta,
+            aluno: aluno, pergunta: this.pergunta,
             resposta: resposta
         };
-        this.jogoService.responder(respostaAluno)
+
+        const dto: Dto = {
+            salaID: this.salaID,
+            aluno: aluno,
+            chatMessage: null,
+            pergunta: null,
+            resposta: respostaAluno,
+            verificaResposta: null,
+            type: MessageType.respostaAluno
+        }
+      console.log(dto);
+
+      this.jogoService.responder(dto)
     }
 }

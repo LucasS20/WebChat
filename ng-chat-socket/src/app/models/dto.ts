@@ -1,11 +1,15 @@
 import {MessageType} from "./MessageType";
 import {Pergunta} from "./pergunta";
-import {ChatMessage} from "./chat-message";
+import {Aluno} from "./Aluno";
+import {RespostaAluno} from "./respostaAluno";
+
 
 export interface Dto {
-  type: MessageType;
-
-  salaID: string;
-  chatMessage: string;
-  pergunta: Pergunta;
+    salaID: String;
+    aluno: Aluno | null;
+    chatMessage: string | null;
+    pergunta: Pergunta | null;
+    resposta: RespostaAluno | null;
+    verificaResposta: string | null;
+    type: MessageType
 }

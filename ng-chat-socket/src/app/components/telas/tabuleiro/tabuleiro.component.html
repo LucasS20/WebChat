@@ -1,12 +1,12 @@
 <div class="tabuleiro-container">
     <div class="logo-container">
         <img [src]="logoSrc" alt="Logo" class="logo-image"/>
-        <app-button class="central-button" (click)="onButtonClick()" [texto]="'Próxima Pergunta'"></app-button>
+        <button class="central-button" (click)="onButtonClick()" >Próxima pergunta</button>
     </div>
     <div *ngFor="let rowIndex of [].constructor(numRows); let row = index" class="row">
         <div *ngFor="let colIndex of [].constructor(numCols); let col = index"
              [ngClass]="{ 'cell': true, 'bordered': getNumber(row, col) }"
-             [style.backgroundColor]="getNumber(row, col) ? '#EF4444' : 'transparent'">
+             [style.backgroundColor]="getNumber(row, col) ? 'rgba(0,16,109,0.67)' : 'transparent'">
             {{ getNumber(row, col) }}
         </div>
     </div>
