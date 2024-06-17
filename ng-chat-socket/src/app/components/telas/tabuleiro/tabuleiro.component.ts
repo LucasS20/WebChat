@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormComponent} from "../../form/form/form.component";
 import {ActivatedRoute} from "@angular/router";
-import {TabuleiroService} from "../../../services/tabuleiro.service";
-import {NgClass, NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {ButtonComponent} from "../../inputs/button/button.component";
 import {JogoService} from "../../../services/jogoService/jogo.service";
+import {MatButton} from "@angular/material/button";
+import {Player} from "../../../models/Player";
+import {Aluno} from "../../../models/Aluno";
 
 @Component({
     selector: 'app-tabuleiro',
@@ -13,17 +15,28 @@ import {JogoService} from "../../../services/jogoService/jogo.service";
         NgOptimizedImage,
         NgForOf,
         NgClass,
-        ButtonComponent
+        ButtonComponent,
+        MatButton,
+        NgIf,
+        NgStyle
     ],
     templateUrl: './tabuleiro.component.html',
     styleUrl: './tabuleiro.component.scss'
 })
 export class TabuleiroComponent extends FormComponent implements OnInit {
+    cells: number[] = Array(24).fill(0);
     private userID: any;
     private salaID: any;
-    readonly numRows = 9;
-    readonly numCols = 5;
-    logoSrc = 'assets/logo_tis.png';
+
+    players: Player[] = [
+        new Player(new Aluno(1, 'Alice'), 0, 'red'),
+        new Player(new Aluno(2, 'Bob'), 5, 'blue'),
+        new Player(new Aluno(3, 'Carol'), 5, 'green'),
+        new Player(new Aluno(4, 'Dave'), 10, 'yellow'),
+        new Player(new Aluno(5, 'Eve'), 15, 'purple'),
+        new Player(new Aluno(6, 'Frank'), 5, 'orange')
+    ];
+    colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#A633FF', '#FFD733'];
 
     constructor(public route: ActivatedRoute,
                 public jogoService: JogoService) {
@@ -34,19 +47,6 @@ export class TabuleiroComponent extends FormComponent implements OnInit {
         this.userID = this.route.snapshot.params['userID'];
         this.salaID = this.route.snapshot.params['salaID'];
         this.jogoService.conectarAosSockets(this.salaID, this.salaID);
-    }
-
-    getNumber(row: number, col: number): string | number {
-        if (row === 0) {
-            return 1 + col;
-        } else if (col === this.numCols - 1 && row < this.numRows - 1) {
-            return 10 + row;
-        } else if (row === this.numRows - 1 && col > 0) {
-            return 14 + (this.numCols - col - 1);
-        } else if (col === 0 && row > 0) {
-            return 24 + (this.numRows - row - 2);
-        }
-        return '';
     }
 
     onButtonClick() {

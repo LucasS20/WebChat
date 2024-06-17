@@ -1,13 +1,16 @@
-<div class="tabuleiro-container">
+<div class="board-container">
+  <div class="board">
+    <div class="cell" *ngFor="let cell of cells; let i = index">
+      <span class="cell-number">{{ i + 1 }}</span>
+      <div class="players-container">
+        <ng-container *ngFor="let player of players">
+          <div class="player" *ngIf="player.posicao === i" [ngStyle]="{'background-color': player.color}" title="{{ player.aluno.nome }}"></div>
+        </ng-container>
+      </div>
+    </div>
     <div class="logo-container">
-        <img [src]="logoSrc" alt="Logo" class="logo-image"/>
-        <button class="central-button" (click)="onButtonClick()" >Próxima pergunta</button>
+      <img src="assets/logo_tis.png" alt="Logo" class="logo">
+      <button mat-button class="action-button" (click)="onButtonClick()">Proxima pergunta</button>
     </div>
-    <div *ngFor="let rowIndex of [].constructor(numRows); let row = index" class="row">
-        <div *ngFor="let colIndex of [].constructor(numCols); let col = index"
-             [ngClass]="{ 'cell': true, 'bordered': getNumber(row, col) }"
-             [style.backgroundColor]="getNumber(row, col) ? 'rgba(0,16,109,0.67)' : 'transparent'">
-            {{ getNumber(row, col) }}
-        </div>
-    </div>
+  </div>
 </div>
