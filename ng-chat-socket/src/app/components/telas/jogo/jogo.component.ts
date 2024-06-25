@@ -96,7 +96,6 @@ export class JogoComponent extends FormComponent implements OnInit {
             verificaResposta: null,
             type: MessageType.respostaAluno
         }
-      console.log(dto);
 
       this.jogoService.responder(dto)
     }

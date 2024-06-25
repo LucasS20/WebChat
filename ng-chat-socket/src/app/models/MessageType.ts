@@ -3,5 +3,6 @@ export enum MessageType {
   respostaAluno = "respostaAluno",
   solicitacaoPergunta = "solicitacaoPergunta",
   estadoTabuleiro = "estadoTabuleiro",
-  iniciarJogo = "iniciarJogo"
+  iniciarJogo = "iniciarJogo",
+  pergunta = "pergunta"
 }

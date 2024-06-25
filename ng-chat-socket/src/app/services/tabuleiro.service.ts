@@ -9,7 +9,7 @@ import {Stomp} from "@stomp/stompjs";
   providedIn: 'root'
 })
 export class TabuleiroService {
-  private readonly urlHost: string = 'http://localhost:8081';
+  private readonly urlHost: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8081';
   private readonly endpointJogoRest = 'api/jogo';
   private stompClient: any;
   public perguntaAtual = new Subject<string>();

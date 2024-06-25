@@ -86,7 +86,7 @@ export class CriarSalaComponent extends FormComponent implements OnInit {
   redirecionarSalaEspera() {
     const idSala = this.form.value.id;
     const linkSala = `${this.URL_HOST}/chat/${idSala}/${(this.PROFESSOR_ID)}`
-    this.router.navigate(['chat', idSala, this.PROFESSOR_ID]);
+    this.router.navigate(['chat', idSala, 'professor']);
   }
 
   onSubmit() {

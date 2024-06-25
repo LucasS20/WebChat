@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class ChatService {
   stompClient: any;
-  private readonly url: string = 'http://localhost:8081';
+  private readonly url: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8081';
   private messageSubject: BehaviorSubject<Dto[]> = new BehaviorSubject<Dto[]>([]);
   private nome: string = '';
   private salaID: string = '';
@@ -74,7 +74,7 @@ export class ChatService {
       verificaResposta: null,
       salaID: roomID,
       chatMessage: null,
-      pergunta: {} as Pergunta,
+      pergunta: null,
       type: MessageType.iniciarJogo
     }
     this.stompClient.send(`app/jogo/${roomID}`, {}, JSON.stringify(dtoInicioJogo));

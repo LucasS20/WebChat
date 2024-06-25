@@ -57,7 +57,7 @@ export class ChatComponent extends FormComponent implements OnInit, OnDestroy {
         aluno: {id: null, nome: this.userID},
         resposta: null,
         verificaResposta: null,
-        pergunta: {} as Pergunta,
+        pergunta: null,
         type: MessageType.mensagem
       }
       this.chatService.sendMessage(this.salaID, dto);
@@ -73,7 +73,6 @@ export class ChatComponent extends FormComponent implements OnInit, OnDestroy {
     this.chatService.getMessageSubject().subscribe((dtos: Dto[]) => {
       const mensagens = dtos.filter(dto => dto.type === MessageType.mensagem);
       this.listaMensagens = mensagens;
-      console.log(this.listaMensagens);
     });
   }
 }
