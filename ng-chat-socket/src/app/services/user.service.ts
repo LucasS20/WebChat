@@ -9,7 +9,7 @@ import {ɵFormGroupValue, ɵTypedOrUntyped} from "@angular/forms";
 })
 export class UserService {
 
-  readonly url: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8080';
+  readonly url: string = 'http://ec2-44-203-95-223.compute-1.amazonaws.com:8080';
   readonly userPath: string = '/api/user/';
 
   constructor(public http: HttpClient, public spinner: SpinnerService) {

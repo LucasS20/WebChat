@@ -13,8 +13,8 @@ import {MessageType} from "../../models/MessageType";
     providedIn: 'root'
 })
 export class JogoService {
-    private readonly urlHost: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8081';
-    private readonly urlHostRest: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8080';
+    private readonly urlHost: string = 'http://ec2-44-203-95-223.compute-1.amazonaws.com:8081';
+    private readonly urlHostRest: string = 'http://ec2-44-203-95-223.compute-1.amazonaws.com:8080';
     private readonly endpointJogoRest = 'api/jogo';
     private stompClient: any;
     public perguntaAtual = new Subject<any>();

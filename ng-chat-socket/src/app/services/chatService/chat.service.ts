@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class ChatService {
   stompClient: any;
-  private readonly url: string = 'http://ec2-52-90-189-121.compute-1.amazonaws.com:8081';
+  private readonly url: string = 'http://ec2-44-203-95-223.compute-1.amazonaws.com:8081';
   private messageSubject: BehaviorSubject<Dto[]> = new BehaviorSubject<Dto[]>([]);
   private nome: string = '';
   private salaID: string = '';
