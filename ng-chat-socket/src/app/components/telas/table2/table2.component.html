@@ -1,0 +1,13 @@
+<div class="grid grid-rows-5 w-full h-full" style="background-color: #fbfdfd;">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.75);">
+    <img src="assets/logo_tis.png" alt="Logo" style="width: 100%; height: auto;" />
+  </div>
+  <div *ngFor="let rowIndex of [].constructor(numRows); let i = index" class="grid grid-cols-10">
+    <div *ngFor="let colIndex of [].constructor(numCols); let j = index"
+         class="col-span-1 row-span-1 flex justify-center items-center"
+         [ngClass]="{'border border-black': getNumber(i, j)}"
+         [ngStyle]="{'background-color': getNumber(i, j) ? '#fd8200' : 'transparent'}">
+      {{ getNumber(i, j) }}
+    </div>
+  </div>
+</div>
